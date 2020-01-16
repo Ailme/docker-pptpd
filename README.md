@@ -19,7 +19,7 @@ username    *           password    *
 To start VPN server as a docker container run:
 
 ````
-docker run -d --name=pptpd --privileged -p 1723:1723 -v {path_to_chap_secrets}:/etc/ppp/chap-secrets ailme/docker-pptpd
+docker run -d --name=pptpd --net=host --privileged -p 1723:1723 -v {path_to_chap_secrets}:/etc/ppp/chap-secrets ailme/docker-pptpd
 ````
 
 Edit your local _chap-secrets_ file, to add or modify VPN users whenever you need.
@@ -35,10 +35,11 @@ services:
     image: ailme/docker-pptpd
     container_name: pptpd
     ports:
-      - "1723:1723"
+      - 1723:1723
     volumes:
       - ./pptpd/chap-secrets:/etc/ppp/chap-secrets
     privileged: true
+    network_mode: host
     restart: always
 ````
 
